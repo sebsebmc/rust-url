@@ -17,7 +17,7 @@ use core::sync::atomic::{AtomicUsize, Ordering};
 pub fn url_origin(url: &Url) -> Origin {
     let scheme = url.scheme();
     match scheme {
-        "blob" | "file" => {
+        "blob" => {
             let result = Url::parse(url.path());
             match result {
                 Ok(ref url) => url_origin(url),
@@ -28,6 +28,11 @@ pub fn url_origin(url: &Url) -> Origin {
             scheme.to_owned(),
             url.host().unwrap().to_owned(),
             url.port_or_known_default().unwrap(),
+        ),
+        "file" => Origin::Tuple(
+            scheme.to_owned(),
+            url.host().unwrap.to_owned(),
+            None,
         ),
         _ => Origin::new_opaque(),
     }
