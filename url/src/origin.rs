@@ -31,7 +31,7 @@ pub fn url_origin(url: &Url) -> Origin {
         ),
         "file" => Origin::Tuple(
             scheme.to_owned(),
-            url.host().unwrap().to_owned(),
+            url.host().unwrap_or("localhost").to_owned(),
             0,
         ),
         _ => Origin::new_opaque(),
